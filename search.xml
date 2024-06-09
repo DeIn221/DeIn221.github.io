@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>美化Windows下的PowerShell</title>
+    <url>/2024/06/10/%E7%BE%8E%E5%8C%96Windows%E4%B8%8B%E7%9A%84PowerShell/</url>
+    <content><![CDATA[<p>参考视频：<a href="https://www.bilibili.com/video/BV1Gz421D7Qr/?spm_id_from=333.337.search-card.all.click&vd_source=f81464a1b7b60cf018eb007ffc19bbf0">Windows11 里定制个性 PowerShell + Neovim 全程音乐不废话 ！ | 作者：ceonta</a></p>
+<h3 id="升级powershell"><a href="#升级powershell" class="headerlink" title="升级powershell"></a>升级powershell</h3><p>如果你是旧版 powershell 也就是蓝色图标的 需要你输入如下命令更新模块：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> <span class="literal">-Name</span> PSReadLine <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<p>后面配置可能会有问题的建议直接升级到<code>powershell 7.4</code></p>
+<p>使用winget安装</p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 搜到最新版的 PowerShell</span></span><br><span class="line">winget search Microsoft.PowerShell</span><br></pre></td></tr></table></figure>
+<p>也可以到<code>Microsoft Store</code>里搜索<code>PowerShell Core</code>安装</p>
+<p>输出：</p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line">Name               Id                           Version   Source</span><br><span class="line"><span class="literal">-----------------------------------------------------------------</span></span><br><span class="line">PowerShell         Microsoft.PowerShell         <span class="number">7.4</span>.<span class="number">2.0</span>   winget</span><br><span class="line">PowerShell Preview Microsoft.PowerShell.Preview <span class="number">7.5</span>.<span class="number">0.3</span>   winget</span><br></pre></td></tr></table></figure>
+
+
+<p>使用 id 参数安装 PowerShell 或 PowerShell 预览</p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line">winget install <span class="literal">--id</span> Microsoft.Powershell <span class="literal">--source</span> winget</span><br><span class="line">winget install <span class="literal">--id</span> Microsoft.Powershell.Preview <span class="literal">--source</span> winget</span><br></pre></td></tr></table></figure>
+
+<p>然后在terminal切换到黑色图标的powershell就行</p>
+<h3 id="安装Nerd-Font"><a href="#安装Nerd-Font" class="headerlink" title="安装Nerd Font"></a>安装Nerd Font</h3><p><a href="https://www.nerdfonts.com/">Nerd Font</a><br>选一个自己喜欢的</p>
+<p>我自己使用的是Maple Mono SC NF<br><a href="https://github.com/subframe7536/Maple-font">Maple-font</a><br>主要是喜欢黑体中文的适配，这个也做了Nerd Font，其实个人觉得斜体的连体部分还是有点花哨了<br>我比较喜欢朴素一点的，不过也就一点点连笔完全在可接受的范围内</p>
+<h3 id="安装nvim"><a href="#安装nvim" class="headerlink" title="安装nvim"></a>安装nvim</h3><figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line">winget insatll <span class="literal">--id</span>=Neovim.Neovim <span class="literal">-e</span> </span><br></pre></td></tr></table></figure>
+<p>获取init.vim配置文件</p>
+<p><a href="https://gist.github.com/BekBrace">GistHome | BekBrace</a></p>
+<p>一般情况下windows是复制到<code>C:\Users\11271\AppData\Local\nvim\init.vim</code>文件里</p>
+<h3 id="安装vim-plug插件管理"><a href="#安装vim-plug插件管理" class="headerlink" title="安装vim-plug插件管理"></a>安装vim-plug插件管理</h3><p>在powershell里执行</p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="built_in">iwr</span> <span class="literal">-useb</span> https://raw.githubusercontent.com/junegunn/vim<span class="literal">-plug</span>/master/plug.vim |`</span><br><span class="line"><span class="built_in">ni</span> <span class="string">&quot;<span class="variable">$</span>(@(<span class="variable">$env:XDG_DATA_HOME</span>, <span class="variable">$env:LOCALAPPDATA</span>)[<span class="variable">$null</span> -eq <span class="variable">$env:XDG_DATA_HOME</span>])/nvim-data/site/autoload/plug.vim&quot;</span> <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+
+<p>安装好后，进入nvim，通过<code>:PlugInstall</code>安装插件</p>
+<h3 id="编译coc"><a href="#编译coc" class="headerlink" title="编译coc"></a>编译coc</h3><p>先要安装<code>nodejs</code></p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line">winget install <span class="literal">--id</span>=OpenJS.NodeJS.LTS <span class="literal">-e</span></span><br></pre></td></tr></table></figure>
+
+
+<p>安装nvm</p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 没有choco，先安装choco</span></span><br><span class="line">choco install nvm</span><br></pre></td></tr></table></figure>
+
+
+<p>然后到<code>C:\Users\11271\AppData\Local\nvim-data\plugged\coc.nvim</code>目录下编译构建</p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment">#执行</span></span><br><span class="line">npm install <span class="literal">--global</span> yarn</span><br><span class="line"><span class="comment">#yarn是否安装成功</span></span><br><span class="line">yarn <span class="literal">--version</span></span><br><span class="line">yarn install</span><br><span class="line">yarn build</span><br></pre></td></tr></table></figure>
+
+
+<p>在打开nvim，coc自动安装好一些javascript，typescript等的自动提示</p>
+<p>还可以自己安装一些coc-python，coc-java通过<code>:CocInstall coc-python</code>的指令</p>
+<h3 id="安裝ohmyposh"><a href="#安裝ohmyposh" class="headerlink" title="安裝ohmyposh"></a>安裝ohmyposh</h3><figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line">winget install JanDeDobbeleer.OhMyPosh <span class="literal">-s</span> winget</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看配置文件的路径</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PROFILE</span></span><br></pre></td></tr></table></figure>
+
+<p>配置文件内容</p>
+<figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Aliases 设置快捷指令</span></span><br><span class="line"><span class="built_in">Set-Alias</span> tt tree</span><br><span class="line"><span class="built_in">Set-Alias</span> ll <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">Set-Alias</span> g git</span><br><span class="line"><span class="built_in">Set-Alias</span> vim nvim</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prompt 设置ohmyposh的主题</span></span><br><span class="line"><span class="comment"># oh-my-posh init pwsh | Invoke-Expression</span></span><br><span class="line"><span class="built_in">oh</span><span class="literal">-my-posh</span> init pwsh <span class="literal">--config</span> <span class="string">&#x27;C:/Users/11271/Documents/PowerShell/myprofile.omp.json&#x27;</span> | <span class="built_in">Invoke-Expression</span></span><br><span class="line"><span class="comment">#oh-my-posh init pwsh --config &#x27;https://gitee.com/wangnd/oh-my-posh/raw/main/themes/M365Princess.omp.json&#x27; | Invoke-Expression</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Functions 写一个whereis的函数，可以返回软件的位置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">whereis</span> <span class="params">(<span class="variable">$command</span>)</span></span> &#123;</span><br><span class="line">	<span class="built_in">Get-Command</span> <span class="literal">-Name</span> <span class="variable">$command</span> <span class="literal">-ErrorAction</span> SilentlyContinue |</span><br><span class="line">	<span class="built_in">Select-Object</span> <span class="literal">-ExpandProperty</span> Path <span class="literal">-ErrorAction</span> SilentlyContinue</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#这几个要先安装，然后在配置里自启动</span></span><br><span class="line"><span class="comment">#Terminal Icons</span></span><br><span class="line"><span class="built_in">Import-Module</span> Terminal<span class="literal">-Icons</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#PSReadLine</span></span><br><span class="line"><span class="built_in">Import-Module</span> PSReadLine</span><br><span class="line"><span class="built_in">Set-PSReadLineKeyHandler</span> <span class="literal">-Key</span> Tab <span class="literal">-Function</span> Complete</span><br><span class="line"><span class="built_in">Set-PSReadLineOption</span> <span class="literal">-PredictionViewStyle</span> ListView</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装Terminal-Icons"><a href="#安装Terminal-Icons" class="headerlink" title="安装Terminal-Icons"></a>安装Terminal-Icons</h3><figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment">#安装终端图标，文件夹图标什么的</span></span><br><span class="line"><span class="built_in">Install-Module</span> <span class="literal">-Name</span> Terminal<span class="literal">-Icons</span> <span class="literal">-Repository</span> PSGallery <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="安装z-file-jumper"><a href="#安装z-file-jumper" class="headerlink" title="安装z file jumper"></a>安装z file jumper</h3><figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment">#类似于cd的指令，这个还有记忆功能，能根据你使用的频率设置权重</span></span><br><span class="line"><span class="comment">#记住经常跳转的文件地址，然后可以不用使用全路径，甚至只使用首字母就可以跳转</span></span><br><span class="line"><span class="built_in">Install-Module</span> <span class="literal">-Name</span> z <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="安装配置PSReadLine"><a href="#安装配置PSReadLine" class="headerlink" title="安装配置PSReadLine"></a>安装配置PSReadLine</h3><figure class="highlight ps1"><table><tr><td class="code"><pre><span class="line"><span class="comment">#PSReadLine类似于命令行历史记录的功能，敲一个字母，就显示出这个首字母的相关历史指令</span></span><br><span class="line"><span class="built_in">Install-Module</span> <span class="literal">-Name</span> PSReadLine <span class="literal">-AllowPrerelease</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span> <span class="literal">-SkipPublisherCheck</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置PSReadLine预测源</span></span><br><span class="line"><span class="built_in">Set-PSReadLineOption</span> <span class="literal">-PredictionSource</span> <span class="built_in">History</span></span><br><span class="line"><span class="comment">#这个就是写在配置文件里的那个</span></span><br><span class="line"><span class="built_in">Set-PSReadLineOption</span> <span class="literal">-PredictionViewStyle</span> ListView</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>PowerShell</tag>
+        <tag>美化</tag>
+        <tag>Windows终端</tag>
+        <tag>oh-my-posh</tag>
+      </tags>
+  </entry>
+</search>
